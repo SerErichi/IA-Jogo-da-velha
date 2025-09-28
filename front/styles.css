@@ -1,0 +1,57 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fbe3e8;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.jogo_da_velha {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    border-radius: 50px;
+    border: 3px solid #333;
+}
+
+.jogo_da_velha button {
+    width: 100px;
+    height: 100px;
+    font-size: 2em;
+    cursor: pointer;
+    border: 1px solid #333;    
+}
+
+.par {
+    background-color: #f0ead2;
+}
+
+.impar {
+    background-color: #c6ac8f;
+}
+
+.par:hover {
+    background-color: #e0d4b2;
+}
+
+.impar:hover {
+    background-color: #b59a7c;
+}
+
+#edge0 {
+    border-radius: 47px 0 0 0;
+}
+
+#edge1 {
+    border-radius: 0 47px 0 0;
+}
+
+#edge2 {
+    border-radius: 0 0 0 47px;
+}
+
+#edge3 {
+    border-radius: 0 0 47px 0;
+}
