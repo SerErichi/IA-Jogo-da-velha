@@ -1,11 +1,63 @@
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background: #fbe3e8;
     margin: 0;
     font-family: Arial, sans-serif;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.hud {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(4px);
+}
+
+.hud-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.hud-row.small {
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.hud-row .sep {
+    opacity: 0.6;
+}
+
+.hud button {
+    border: none;
+    background: #b5838d;
+    color: #fff;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hud button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hud button:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .jogo_da_velha {
