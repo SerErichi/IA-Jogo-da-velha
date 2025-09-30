@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Jogo da Velha</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/11456d506c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="hud">
+    <div class="hud-row">
+      <label for="model-select"><strong>Modelo:</strong></label>
+      <select id="model-select">
+        <option value="mlp">MLP</option>
+        <option value="knn">k-NN</option>
+        <option value="arvore">Árvore de Decisão</option>
+      </select>
+      <span class="sep">|</span>
+      <strong>Turno:</strong> <span id="who-turn">X</span>
+      <span class="sep">|</span>
+      <strong>Predição IA:</strong> <span id="status-pred">—</span>
+      <span class="sep">|</span>
+      <strong>Estado real:</strong> <span id="status-real">—</span>
+    </div>
+    <div class="hud-row">
+      <strong>Acertos/Total:</strong> <span id="hits-total">0/0</span>
+      <span class="sep">|</span>
+      <strong>Acurácia:</strong> <span id="acc">0%</span>
+      <button id="reset-btn" style="margin-left:1rem">Reiniciar partida</button>
+    </div>
+  </header>
+
+  <div class="jogo_da_velha" id="board">
+    <button onclick="jogada('0,0')" class="impar" id="edge0"></button>
+    <button onclick="jogada('0,1')" class="par"></button>
+    <button onclick="jogada('0,2')" class="impar" id="edge1"></button>
+
+    <button onclick="jogada('1,0')" class="par"></button>
+    <button onclick="jogada('1,1')" class="impar"></button>
+    <button onclick="jogada('1,2')" class="par"></button>
+
+    <button onclick="jogada('2,0')" class="impar" id="edge2"></button>
+    <button onclick="jogada('2,1')" class="par"></button>
+    <button onclick="jogada('2,2')" class="impar" id="edge3"></button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
