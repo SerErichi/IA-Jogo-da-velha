@@ -96,7 +96,7 @@ async function avaliarEstadoAPI(boardArr, turn=currentPlayer){
 
     // contabilizador de acertos
     totalPreds += 1;
-    if (data.prediction.toLowerCase() === real) hits += 1;
+    if (data.prediction.toLowerCase() === real.toLocaleLowerCase()) hits += 1;
     updateMetricsUI();
 
     return data;

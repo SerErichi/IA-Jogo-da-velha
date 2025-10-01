@@ -11,13 +11,13 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def treinar_e_prever_estado(tabuleiro, modelo_usuario=None):
-    # 1️⃣ Carregar dataset
-    data = pd.read_csv("tic-tac-toe-clean.csv", header=None)
+    # Carregar dataset
+    data = pd.read_csv("tic_tac_toe_with_threats_and_draws.csv", header=None)
     X = data.iloc[:, :-1]
     y = data.iloc[:, -1]
     X.columns = [f'pos_{i+1}' for i in range(9)]
 
-    # 2️⃣ Label Encoding para DT e RF
+    # Label Encoding para DT e RF
     encoders = {}
     X_label = pd.DataFrame()
     for col in X.columns:
@@ -28,11 +28,11 @@ def treinar_e_prever_estado(tabuleiro, modelo_usuario=None):
     y_encoder = LabelEncoder()
     y_encoded = y_encoder.fit_transform(y)
 
-    # 3️⃣ OneHotEncoder para k-NN e MLP
+    # OneHotEncoder para k-NN e MLP
     ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
     X_ohe = ohe.fit_transform(X)
 
-    # 4️⃣ Divisão treino/val/test
+    # Divisão treino/val/test
     X_temp_label, X_test_label, y_temp, y_test = train_test_split(
         X_label, y_encoded, test_size=0.2, random_state=42)
     X_train_label, X_val_label, y_train, y_val = train_test_split(
@@ -49,7 +49,7 @@ def treinar_e_prever_estado(tabuleiro, modelo_usuario=None):
     X_val_scaled = scaler.transform(X_val_ohe)
     X_test_scaled = scaler.transform(X_test_ohe)
 
-    # 5️⃣ Treinar modelos
+    # Treinar modelos
     knn = KNeighborsClassifier(n_neighbors=10)
     mlp = MLPClassifier(
         hidden_layer_sizes=(10,50),
@@ -68,7 +68,7 @@ def treinar_e_prever_estado(tabuleiro, modelo_usuario=None):
     dt.fit(X_train_label, y_train)
     rf.fit(X_train_label, y_train)
 
-    # 6️⃣ Avaliar todos os modelos
+    # Avaliar todos os modelos
     modelos = {'k-NN': knn, 'MLP': mlp, 'DecisionTree': dt, 'RandomForest': rf}
     resultados = {}
     for nome, modelo in modelos.items():
@@ -91,7 +91,7 @@ def treinar_e_prever_estado(tabuleiro, modelo_usuario=None):
         df_report = pd.DataFrame(res['report']).transpose()
         print(df_report[['precision','recall','f1-score','support']])
 
-    # 7️⃣ Escolher modelo
+    # Escolher modelo
     if modelo_usuario is not None:
         melhor_modelo_nome = modelo_usuario
         print(f"\nUsuário escolheu o modelo: {melhor_modelo_nome}")
@@ -101,7 +101,7 @@ def treinar_e_prever_estado(tabuleiro, modelo_usuario=None):
 
     melhor_modelo = modelos[melhor_modelo_nome]
 
-    # 8️⃣ Prever novo tabuleiro
+    # Prever novo tabuleiro
     tab_df_label = pd.DataFrame([tabuleiro], columns=X.columns)
     for col in tab_df_label.columns:
         val = tab_df_label[col][0]
