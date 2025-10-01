@@ -11,10 +11,10 @@ def index():
 @app.post("/predict/<modelo>")
 def predict_route(modelo):
     modelo = (modelo or "").lower()
-    modelos_validos = {"mlp": "MLP", "knn": "k-NN", "arvore": "DecisionTree"}
+    modelos_validos = {"mlp": "MLP", "knn": "k-NN", "arvore": "DecisionTree", "rf": "RandomForest"}
 
     if modelo not in modelos_validos:
-        abort(404, description="Modelo inválido. Use: mlp, knn ou arvore.")
+        abort(404, description="Modelo inválido. Use: mlp, knn, arvore. ou random forest")
 
     data = request.get_json(silent=True) or {}
     board = data.get("board")
