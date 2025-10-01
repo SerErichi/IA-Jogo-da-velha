@@ -1,5 +1,5 @@
 // === Config ===
-const API_BASE = ""; // mesma origem -> fetch("/predict/<modelo>")
+const API_BASE = "http://127.0.0.1:8000"; // mesma origem -> fetch("/predict/<modelo>")
 
 // === Estado do jogo ===
 let board = Array(9).fill("b"); // "x" | "o" | "b"
