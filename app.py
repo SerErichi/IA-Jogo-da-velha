@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory, abort
-from modelos import treinar_e_prever_estado   # <-- importa sua função real
+from modelos import treinar_e_prever_estado
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
