@@ -1,6 +1,9 @@
 import json
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -58,21 +61,70 @@ def main():
     fig1.tight_layout()
     fig1.savefig(OUTPUT_DIR / "overall_metrics.png", dpi=300)
 
-    # Gráfico 2: F1 por classe em cada modelo
-    fig2, ax2 = plt.subplots(figsize=(10, 6))
-    pivot = per_class_df.pivot(index="class", columns="model", values="f1")
-    pivot.plot(kind="bar", ax=ax2)
+    # Gráfico 2: Acurácia por modelo
+    fig2, ax2 = plt.subplots(figsize=(6, 4))
+    overall_df[["accuracy"]].plot(kind="bar", ax=ax2, legend=False, color=["#1f77b4"])
     ax2.set_ylim(0, 1)
-    ax2.set_ylabel("F1 por classe")
-    ax2.set_title("Comparação de F1 por classe entre modelos")
-    ax2.legend(title="Modelo", bbox_to_anchor=(1.02, 1), loc="upper left")
+    ax2.set_ylabel("Acurácia")
+    ax2.set_title("Acurácia por modelo")
     add_value_labels(ax2)
     fig2.tight_layout()
-    fig2.savefig(OUTPUT_DIR / "f1_per_class.png", dpi=300)
+    fig2.savefig(OUTPUT_DIR / "accuracy_by_model.png", dpi=300)
+
+    # Gráfico 3: F1 macro por modelo
+    fig3, ax3 = plt.subplots(figsize=(6, 4))
+    overall_df[["macro_f1"]].plot(kind="bar", ax=ax3, legend=False, color=["#ff7f0e"])
+    ax3.set_ylim(0, 1)
+    ax3.set_ylabel("F1 Macro")
+    ax3.set_title("F1 Macro por modelo")
+    add_value_labels(ax3)
+    fig3.tight_layout()
+    fig3.savefig(OUTPUT_DIR / "macro_f1_by_model.png", dpi=300)
+
+    # Gráfico 4: F1 por classe em cada modelo
+    fig4, ax4 = plt.subplots(figsize=(10, 6))
+    pivot = per_class_df.pivot(index="class", columns="model", values="f1")
+    pivot.plot(kind="bar", ax=ax4)
+    ax4.set_ylim(0, 1)
+    ax4.set_ylabel("F1 por classe")
+    ax4.set_title("Comparação de F1 por classe entre modelos")
+    ax4.legend(title="Modelo", bbox_to_anchor=(1.02, 1), loc="upper left")
+    add_value_labels(ax4)
+    fig4.tight_layout()
+    fig4.savefig(OUTPUT_DIR / "f1_per_class.png", dpi=300)
+
+    # Gráfico 5: melhores resultados consolidados
+    metric_columns = {"Acurácia": "accuracy", "F1 Macro": "macro_f1"}
+    best_metrics = {
+        display: overall_df[column].idxmax()
+        for display, column in metric_columns.items()
+    }
+    best_values = {
+        display: overall_df.loc[model, metric_columns[display]]
+        for display, model in best_metrics.items()
+    }
+
+    fig5, ax5 = plt.subplots(figsize=(6, 4))
+    bars = ax5.bar(best_metrics.keys(), best_values.values(), color=["#2ca02c", "#d62728"])
+    ax5.set_ylim(0, 1)
+    ax5.set_ylabel("Pontuação")
+    ax5.set_title("Melhores resultados por métrica")
+    for bar, (metric, model) in zip(bars, best_metrics.items()):
+        height = bar.get_height()
+        ax5.text(bar.get_x() + bar.get_width() / 2, height + 0.01, f"{model} ({height:.2f})",
+                 ha="center", va="bottom", fontsize=8)
+    fig5.tight_layout()
+    fig5.savefig(OUTPUT_DIR / "best_metrics.png", dpi=300)
 
     print("Gráficos salvos em:")
-    print(OUTPUT_DIR / "overall_metrics.png")
-    print(OUTPUT_DIR / "f1_per_class.png")
+    for name in [
+        "overall_metrics.png",
+        "accuracy_by_model.png",
+        "macro_f1_by_model.png",
+        "f1_per_class.png",
+        "best_metrics.png",
+    ]:
+        print(OUTPUT_DIR / name)
 
 
 if __name__ == "__main__":
