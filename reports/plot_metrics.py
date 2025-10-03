@@ -10,6 +10,7 @@ import pandas as pd
 
 OUTPUT_DIR = Path(__file__).resolve().parent
 METRICS_FILE = OUTPUT_DIR / "model_metrics.json"
+DATASET_FILE = OUTPUT_DIR.parent / "tic_tac_toe_with_threats_and_draws.csv"
 
 
 def add_value_labels(ax, fmt="{:.2f}"):
@@ -116,14 +117,37 @@ def main():
     fig5.tight_layout()
     fig5.savefig(OUTPUT_DIR / "best_metrics.png", dpi=300)
 
+    # Gráfico 6: distribuição de amostras por classe no dataset
+    if DATASET_FILE.exists():
+        df_dataset = pd.read_csv(DATASET_FILE, header=0)
+        target_column = df_dataset.columns[-1]
+        class_counts = df_dataset[target_column].value_counts().sort_values(ascending=False)
+
+        fig6, ax6 = plt.subplots(figsize=(8, 5))
+        class_counts.plot(kind="bar", ax=ax6, color="#9467bd")
+        ax6.set_ylabel("Número de amostras")
+        ax6.set_xlabel("Classe")
+        ax6.set_title("Distribuição de amostras por classe")
+        for bar in ax6.patches:
+            height = bar.get_height()
+            ax6.text(bar.get_x() + bar.get_width() / 2, height + max(class_counts) * 0.01,
+                     f"{int(height)}", ha="center", va="bottom", fontsize=8)
+        fig6.tight_layout()
+        fig6.savefig(OUTPUT_DIR / "class_distribution.png", dpi=300)
+    else:
+        print(f"Aviso: dataset não encontrado em {DATASET_FILE}, gráfico de distribuição não gerado.")
+
     print("Gráficos salvos em:")
-    for name in [
+    generated_files = [
         "overall_metrics.png",
         "accuracy_by_model.png",
         "macro_f1_by_model.png",
         "f1_per_class.png",
         "best_metrics.png",
-    ]:
+    ]
+    if (OUTPUT_DIR / "class_distribution.png").exists():
+        generated_files.append("class_distribution.png")
+    for name in generated_files:
         print(OUTPUT_DIR / name)
 
 
